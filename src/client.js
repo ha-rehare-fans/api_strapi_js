@@ -1,41 +1,49 @@
-import { google } from 'googleapis';
+import * as path from 'path-browserify';
+import axios from 'axios';
 
+class Strapi {
+  backendUrl;
 
-export const Strapi = class Strapi {
-  constructor() {
-    this.auth = {
-      googleOAuth2Client: (
-        new google.auth.OAuth2(
-          process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-          process.env.NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
-          process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
-        )
-      ),
-    };
-  }
+  constructor(backendUrl) {
+    if(!backendUrl) throw new Error('backendUrl is required parameter.');
 
-  signIn(providerName, options = { providerOptions = {} }) {
-    switch(providerName) {
-      default: {
-        const err = new Error(`Provider "${providerName}" is not implemented.`);
-        err.name = 'NotImplemented';
-        throw err;
-      }
-      case 'google': {
-        const authorizeUrl = this.auth.googleOAuth2Client.generateAuthUrl({
-          ...providerOptions,
-          access_type: 'offline',
-          scope: (options.providerOptions.scope || [ 'email', 'profile' ]).join(' '),
-        });
-        if(options.method === 'popup') {
-          return;
-        }
-        else {
-          return;
-        }
-      }
-    }
+    this.backendUrl = backendUrl;
+    return;
   }
 };
 
+export const initializeStrapi = (backendUrl) => {
+  return new Strapi(backendUrl);
+};
+
+export const signInWithGoogleAccessToken = (strapi, googleAccessToken) => {
+  return axios.get(
+    path.join(strapi.backendUrl, '/api/auth/google/callback'),
+    {
+      params: {
+        access_token: googleAccessToken,
+      },
+    }
+  ).then(resp => {
+    return resp.data;
+  }).catch(err => {
+    console.error(err);
+    throw err;
+  });
+};
+
+export const call = (strapi, jwt, options = {}) => {
+  return axios({
+    ...options,
+    baseURL: strapi.backendUrl,
+    headers: {
+      ...(options.headers || {}),
+      Authorization: `Bearer ${jwt}`,
+    },
+  }).then(resp => {
+    return resp.data;
+  }).catch(err => {
+    throw err;
+  });
+};
 
