@@ -47,3 +47,7 @@ export const call = (strapi, jwt, options = {}) => {
   });
 };
 
+export const absolute = (strapi, pathname) => {
+  return path.join(strapi.backendUrl, pathname);
+};
+
