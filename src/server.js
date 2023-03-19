@@ -47,6 +47,19 @@ export default class Strapi {
     });
   }
 
+  // Auth
+  signInWithProvider(provider, accessToken) {
+    return this.#axiosInstance.request({
+      method: 'get',
+      url: `/api/auth/${provider}/callback`,
+      params: {
+        access_token: accessToken,
+      },
+    }).then(resp => {
+      return resp.data;
+    });
+  }
+
   // API wrappers
   getProvidedServices(page = 1) {
     return this.#axiosInstance.request({
