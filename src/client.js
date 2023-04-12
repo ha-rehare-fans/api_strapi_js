@@ -1,53 +1,23 @@
 import * as path from 'path-browserify';
-import axios from 'axios';
 
-class Strapi {
-  backendUrl;
+export class StrapiClient {
+  #_url;
 
-  constructor(backendUrl) {
-    if(!backendUrl) throw new Error('backendUrl is required parameter.');
-
-    this.backendUrl = backendUrl;
-    return;
+  constructor(config = {}) {
+    this.#_url = config.url || process.env.NEXT_PUBLIC_STRAPI_URL || 'https://cms.ha-rehare.fans/';
   }
-};
 
-export const initializeStrapi = (backendUrl) => {
-  return new Strapi(backendUrl);
-};
+  // Property handlers
+  get url() {
+    return this.#_url;
+  }
+  set url(value) {
+    this.#_url = value;
+  }
 
-export const signInWithGoogleAccessToken = (strapi, googleAccessToken) => {
-  return axios.get(
-    path.join(strapi.backendUrl, '/api/auth/google/callback'),
-    {
-      params: {
-        access_token: googleAccessToken,
-      },
-    }
-  ).then(resp => {
-    return resp.data;
-  }).catch(err => {
-    console.error(err);
-    throw err;
-  });
-};
-
-export const call = (strapi, jwt, options = {}) => {
-  return axios({
-    ...options,
-    baseURL: strapi.backendUrl,
-    headers: {
-      ...(options.headers || {}),
-      Authorization: `Bearer ${jwt}`,
-    },
-  }).then(resp => {
-    return resp.data;
-  }).catch(err => {
-    throw err;
-  });
-};
-
-export const absolute = (strapi, pathname) => {
-  return path.join(strapi.backendUrl, pathname);
+  // Utilities
+  absolute(pathname) {
+    return path.join(this.#_url, pathname);
+  }
 };
 

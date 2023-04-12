@@ -1,3 +1,3 @@
-export * as StrapiClient from './client';
-export * as StrapiServer from './server';
+export * from './client';
+export * from './server';
 

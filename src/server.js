@@ -1,7 +1,7 @@
 import axios from 'axios';
 import axiosRetry from 'axios-retry';
 
-export default class Strapi {
+export class StrapiServer {
   #_url;
   #_apiToken;
   #_userJWT;
@@ -130,45 +130,29 @@ export default class Strapi {
   }
 
   // API wrappers
-  getProvidedServices(page = 1) {
+  execAsApp({
+    endpoint,
+    method,
+    params,
+    data,
+  } = {}) {
     return this.#axiosInstanceWithAPIToken.request({
-      method: 'get',
-      url: '/api/provided-services',
-      params: {
-        populate: [
-          'links',
-          'thumbnail',
-        ],
-        pagination: {
-          page,
-          pageSize: 10,
-        },
-      },
+      method,
+      url: endpoint,
+      params,
+      data,
     }).then(resp => {
       return resp.data;
     });
   }
 
-  getRelatedLinks(key) {
-    return this.#axiosInstanceWithAPIToken.request({
-      method: 'get',
-      url: '/api/related-links-sets',
-      params: {
-        filters: {
-          key: {
-            $eq: key,
-          },
-        },
-        populate: [
-          'relatedLinks',
-          'relatedLinks.thumbnail',
-        ],
-        pagination: {
-          start: 0,
-          limit: 1,
-          withCount: false,
-        },
-      },
+  execAsUser({
+  } = {}) {
+    return this.#axiosInstanceWithUserJWT.request({
+      method,
+      url: endpoint,
+      params,
+      data,
     }).then(resp => {
       return resp.data;
     });
