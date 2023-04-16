@@ -147,6 +147,10 @@ export class StrapiServer {
   }
 
   execAsUser({
+    endpoint,
+    method,
+    params,
+    data,
   } = {}) {
     return this.#axiosInstanceWithUserJWT.request({
       method,
