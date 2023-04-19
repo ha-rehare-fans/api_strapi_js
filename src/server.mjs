@@ -54,7 +54,7 @@ export class StrapiServer {
       retryDelay: axiosRetry.exponentialDelay,
       onRetry: (retryCount, error, requestConfig) => {
         if(retryCount === 1) return;
-        console.log(`[AxiosRetry] Retrying axios request \`${requestConfig.method.toUpperCase()} ${(new URL(requestConfig.baseURL, requestConfig.url)).toString()}\` due to an error "${error.message}" (${retryCount - 1})...`);
+        console.log(`[AxiosRetry] Retrying axios request \`${requestConfig.method.toUpperCase()} ${(new URL(requestConfig.url, requestConfig.baseURL)).toString()}\` due to an error "${error.message}" (${retryCount - 1})...`);
         return;
       },
     });
@@ -73,7 +73,7 @@ export class StrapiServer {
       retryDelay: axiosRetry.exponentialDelay,
       onRetry: (retryCount, error, requestConfig) => {
         if(retryCount === 1) return;
-        console.log(`[AxiosRetry] Retrying axios request \`${requestConfig.method.toUpperCase()} ${(new URL(requestConfig.baseURL, requestConfig.url)).toString()}\` due to an error "${error.message}" (${retryCount - 1})...`);
+        console.log(`[AxiosRetry] Retrying axios request \`${requestConfig.method.toUpperCase()} ${(new URL(requestConfig.url, requestConfig.baseURL)).toString()}\` due to an error "${error.message}" (${retryCount - 1})...`);
         return;
       },
     });
@@ -92,7 +92,7 @@ export class StrapiServer {
       retryDelay: axiosRetry.exponentialDelay,
       onRetry: (retryCount, error, requestConfig) => {
         if(retryCount === 1) return;
-        console.log(`[AxiosRetry] Retrying axios request \`${requestConfig.method.toUpperCase()} ${(new URL(requestConfig.baseURL, requestConfig.url)).toString()}\` due to an error "${error.message}" (${retryCount - 1})...`);
+        console.log(`[AxiosRetry] Retrying axios request \`${requestConfig.method.toUpperCase()} ${(new URL(requestConfig.url, requestConfig.baseURL)).toString()}\` due to an error "${error.message}" (${retryCount - 1})...`);
         return;
       },
     });
