@@ -2,7 +2,7 @@
   "name": "@ha-rehare-fans/strapi",
   "version": "1.0.0",
   "description": "Strapi API for cms.ha-rehare.fans",
-  "module": "src/index.js",
+  "module": "src/index.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
