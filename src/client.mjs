@@ -17,7 +17,7 @@ export class StrapiClient {
 
   // Utilities
   absolute(pathname) {
-    return new URL(pathname, this.#_url);
+    return new URL(pathname, this.#_url).toString();
   }
 };
 
